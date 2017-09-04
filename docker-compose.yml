@@ -1,0 +1,31 @@
+version: "2"
+
+services:
+  mariadb:
+    image: mariadb:10.3.1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: zipper_db
+      MYSQL_USER: zipper_user
+      MYSQL_PASSWORD: zipper_pass
+    volumes:
+      - ./mariadb-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: zipper_user
+      PMA_PASSWORD: zipper_pass
+      PHP_UPLOAD_MAX_FILESIZE: 1G
+      PHP_MAX_INPUT_VARS: 1G
+    ports:
+     - "9991:80"
+
+  zipper:
+    build:
+      #dockerfile: ./docker/golang/Dockerfile
+      dockerfile: ./docker/gobuild/Dockerfile
+      context: .
+    ports:
+      - "9992:8088"

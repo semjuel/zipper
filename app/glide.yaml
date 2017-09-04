@@ -1,0 +1,4 @@
+package: zipper
+import:
+- package: github.com/aws/aws-sdk-go
+- package: github.com/go-sql-driver/mysql
