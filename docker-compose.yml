@@ -34,4 +34,4 @@ services:
       dockerfile: ./docker/golang/Dockerfile
       context: .
     ports:
-      - "9992:8088"
+      - "9993:8088"
