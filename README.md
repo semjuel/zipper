@@ -26,20 +26,24 @@ To start downloading files:
 [
   {
     "name":"Image.jpg",
-    "path":"folder\/brochures\/Image.jpg"
+    "path":"folder\/brochures\/Image.jpg",
+    "type":"s3"
   },
   {
     "name":"Image2.jpg",
-    "path":"folder2\/product\/Image2.jpg"
+    "path":"folder2\/product\/Image2.jpg",
+    "type":"s3"
    },
    {
     "name":"Image3.jpg",
-    "path":"folder\/product\/\/Image3.jpg"
+    "path":"folder\/product\/\/Image3.jpg",
+    "type":"s3"
    }
 ]
 ```
 `name` - File name,
 `path` - path to the file in Amazon S3.
+`type` - leave it = 's3'
 
 * Open link - `http://localhost:9992?r=ehJqJ1CRvypsN3X` 
  or `http://localhost:9993?r=ehJqJ1CRvypsN3X`
