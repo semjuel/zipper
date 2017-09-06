@@ -5,9 +5,9 @@ Microservice on GO for streaming files from Amazon S3 to user.
 Place `credentials` file inside `app/aws` folder. Please
 read `README.md` file inside that folder.
 
-Run `docker-compose up -d` in app root folder.
+Run `docker-compose up -d` in the app root folder.
 
-4 containers will created:
+4 containers will be created:
 * `zipper` - light version of app (alpine and binary file),
  available by link -`localhost:9992`
 * `zipper_go` - not light version of app 
