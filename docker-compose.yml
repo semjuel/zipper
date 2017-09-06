@@ -24,8 +24,14 @@ services:
 
   zipper:
     build:
-      #dockerfile: ./docker/golang/Dockerfile
       dockerfile: ./docker/gobuild/Dockerfile
+      context: .
+    ports:
+      - "9992:8088"
+
+  zipper_go:
+    build:
+      dockerfile: ./docker/golang/Dockerfile
       context: .
     ports:
       - "9992:8088"

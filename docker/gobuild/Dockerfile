@@ -8,6 +8,9 @@ ENV MYSQL_DB_HOST mariadb
 ENV MYSQL_DB_PORT 3306
 ENV MYSQL_DATABASE zipper_db
 
+ENV S3_REGION eu-central-1
+ENV S3_PROFILE test-account
+ENV S3_BUCKET schleniger-files
 
 COPY        ./app/aws/credentials /root/.aws/credentials
 
