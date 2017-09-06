@@ -1,20 +1,21 @@
 package main
 
 import (
+	"archive/zip"
+	"database/sql"
+	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
-	"strconv"
-	"archive/zip"
-	"io"
-	"database/sql"
-	"time"
-	"encoding/json"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/service/s3"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -51,7 +52,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	date := int32(time.Now().Unix())
 
-	err = db.QueryRow("SELECT data FROM hashes WHERE hash=? AND expire>?", ref, date).Scan(&data)
+	query := fmt.Sprintf("SELECT data FROM hashes WHERE hash=%v AND expire>%s", ref, date)
+	err = db.QueryRow(query).Scan(&data)
 	errorLog(err)
 
 	if len(data) == 0 {
