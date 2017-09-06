@@ -53,7 +53,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	date := int32(time.Now().Unix())
 
-	err = db.QueryRow("SELECT data FROM dc_hashes WHERE hash=? AND expire>?", ref, date).Scan(&data)
+	err = db.QueryRow("SELECT data FROM hashes WHERE hash=? AND expire>?", ref, date).Scan(&data)
 	errorLog(err)
 
 	if len(data) == 0 {
@@ -66,17 +66,21 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(b, &m)
 	errorLog(err)
 
-	// @TODO change credentials.
 	// Create the S3 service client for the target region
 	// https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html
 	sess, err := session.NewSession(&aws.Config{
-		Region:      aws.String("eu-central-1"),
-		Credentials: credentials.NewSharedCredentials("", "test-account"),
+		Region:      aws.String(os.Getenv("S3_REGION")),
+		Credentials: credentials.NewSharedCredentials("", os.Getenv("S3_PROFILE")),
 	})
-	errorLog(err)
+
+	if err != nil {
+		errorLog(err)
+		http.Error(w, "Wrong request. Nothing found.", 500)
+		return
+	}
 
 	svc := s3.New(sess)
-	bucket := "schleniger-files"
+	bucket := os.Getenv("S3_BUCKET")
 
 	// Start processing the response
 	w.Header().Add("Content-Disposition", "attachment; filename=\"download.zip\"")
@@ -103,7 +107,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 		defer result.Body.Close()
 
-		// @TODO change zipPath
 		zipPath := file.Name
 
 		// We have to set a special flag so zip files recognize utf file names
@@ -154,7 +157,7 @@ func getSQLConnect() string {
 		database = "zipper_db"
 	}
 
-	// Default value to return: drupal:drupal@tcp(mariadb:3306)/drupal"
+	// Default value to return: zipper_user:zipper_pass@tcp(mariadb:3306)/zipper_db"
 	return user + ":" + pass + "@tcp(" + host + ":" + port + ")/" + database
 }
 
