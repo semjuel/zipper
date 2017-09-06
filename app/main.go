@@ -52,7 +52,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	date := int32(time.Now().Unix())
 
-	query := fmt.Sprintf("SELECT data FROM hashes WHERE hash=%v AND expire>%s", ref, date)
+	query := fmt.Sprintf("SELECT data FROM hashes WHERE hash=%v AND expire>%d", ref, date)
 	err = db.QueryRow(query).Scan(&data)
 	errorLog(err)
 
