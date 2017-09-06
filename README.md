@@ -1,4 +1,5 @@
 # zipper
+Microservice on GO for streaming files from Amazon S3 to user.
 
 ## How to use.
 Place `credentials` file inside `app/aws` folder. Please
