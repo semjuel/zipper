@@ -18,8 +18,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// Global sql.DB to access the database by all handlers.
-var db *sql.DB
 type S3Files struct {
 	Name string
 	Path string
@@ -104,8 +102,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Error downloading \"%s\" - %s", file.Path, err.Error())
 			continue
 		}
-
-		defer result.Body.Close()
 
 		zipPath := file.Name
 
